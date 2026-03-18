@@ -27,7 +27,11 @@ function App() {
     setUser(null);
   };
 
-  if (loading) return <div style={styles.loading}>Loading...</div>;
+  if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.2rem', color: '#6366f1' }}>
+      Loading...
+    </div>
+  );
 
   return (
     <Router>
@@ -41,9 +45,5 @@ function App() {
     </Router>
   );
 }
-
-const styles = {
-  loading: { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.2rem', color: '#6366f1' }
-};
 
 export default App;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Users, Trash2, ArrowLeft, LogOut, Shield } from 'lucide-react';
 import { getUsers, deleteUser } from '../services/api';
 
 export default function AdminPanel({ user, onLogout }) {
@@ -37,10 +38,19 @@ export default function AdminPanel({ user, onLogout }) {
   return (
     <div style={styles.container}>
       <nav style={styles.nav}>
-        <span style={styles.navTitle}>🛡️ Admin Panel</span>
+        <div style={styles.navLeft}>
+          <Shield size={22} color="#fff" style={{ marginRight: '8px' }} />
+          <span style={styles.navTitle}>Admin Panel</span>
+        </div>
         <div style={styles.navRight}>
-          <Link to="/dashboard" style={styles.backLink}>← Dashboard</Link>
-          <button onClick={onLogout} style={styles.logoutBtn}>Logout</button>
+          <Link to="/dashboard" style={styles.backLink}>
+            <ArrowLeft size={14} style={{ marginRight: '4px' }} />
+            Dashboard
+          </Link>
+          <button onClick={onLogout} style={styles.logoutBtn}>
+            <LogOut size={14} style={{ marginRight: '4px' }} />
+            Logout
+          </button>
         </div>
       </nav>
 
@@ -49,7 +59,10 @@ export default function AdminPanel({ user, onLogout }) {
         {success && <div style={styles.success}>{success}</div>}
 
         <div style={styles.card}>
-          <h3 style={styles.cardTitle}>👥 All Users ({users.length})</h3>
+          <h3 style={styles.cardTitle}>
+            <Users size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            All Users ({users.length})
+          </h3>
           {loading ? <p>Loading users...</p> : users.length === 0 ? <p>No users found.</p> :
             <table style={styles.table}>
               <thead>
@@ -66,12 +79,18 @@ export default function AdminPanel({ user, onLogout }) {
                     <td style={styles.td}>{u.email}</td>
                     <td style={styles.td}>
                       <span style={{ ...styles.badge, background: u.role === 'admin' ? '#6366f1' : '#10b981' }}>
+                        {u.role === 'admin'
+                          ? <Shield size={11} style={{ marginRight: '3px', verticalAlign: 'middle' }} />
+                          : <Users size={11} style={{ marginRight: '3px', verticalAlign: 'middle' }} />
+                        }
                         {u.role}
                       </span>
                     </td>
                     <td style={styles.td}>{new Date(u.createdAt).toLocaleDateString()}</td>
                     <td style={styles.td}>
-                      <button style={styles.deleteBtn} onClick={() => handleDelete(u._id)}>Delete</button>
+                      <button style={styles.deleteBtn} onClick={() => handleDelete(u._id)}>
+                        <Trash2 size={13} style={{ marginRight: '4px' }} />Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -87,19 +106,20 @@ export default function AdminPanel({ user, onLogout }) {
 const styles = {
   container: { minHeight: '100vh', background: '#f3f4f6' },
   nav: { background: '#4f46e5', color: '#fff', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+  navLeft: { display: 'flex', alignItems: 'center' },
   navTitle: { fontSize: '1.3rem', fontWeight: '700' },
   navRight: { display: 'flex', alignItems: 'center', gap: '1rem' },
-  backLink: { color: '#c7d2fe', textDecoration: 'none', fontWeight: '600' },
-  logoutBtn: { background: 'rgba(255,255,255,0.2)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)', padding: '0.4rem 0.8rem', borderRadius: '6px', cursor: 'pointer' },
+  backLink: { color: '#c7d2fe', textDecoration: 'none', fontWeight: '600', display: 'flex', alignItems: 'center' },
+  logoutBtn: { background: 'rgba(255,255,255,0.2)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)', padding: '0.4rem 0.8rem', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center' },
   main: { maxWidth: '900px', margin: '2rem auto', padding: '0 1rem' },
   card: { background: '#fff', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' },
-  cardTitle: { marginBottom: '1rem', color: '#374151' },
+  cardTitle: { marginBottom: '1rem', color: '#374151', display: 'flex', alignItems: 'center' },
   table: { width: '100%', borderCollapse: 'collapse' },
   th: { textAlign: 'left', padding: '0.75rem', background: '#f9fafb', borderBottom: '2px solid #e5e7eb', color: '#6b7280', fontSize: '0.85rem', textTransform: 'uppercase' },
   tr: { borderBottom: '1px solid #f3f4f6' },
   td: { padding: '0.85rem 0.75rem', color: '#374151', fontSize: '0.9rem' },
-  badge: { color: '#fff', fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '20px', fontWeight: '600' },
-  deleteBtn: { padding: '0.3rem 0.7rem', background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' },
+  badge: { color: '#fff', fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '20px', fontWeight: '600', display: 'inline-flex', alignItems: 'center' },
+  deleteBtn: { padding: '0.3rem 0.7rem', background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600', display: 'inline-flex', alignItems: 'center' },
   error: { background: '#fee2e2', color: '#dc2626', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem' },
   success: { background: '#d1fae5', color: '#065f46', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem' },
 };
